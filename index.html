@@ -31,12 +31,50 @@
 
 <main id="top">
 
+<!-- Vollbild-Video-Hero (Stil: faithfulservant.de) -->
+<section class="hero-video" aria-label="Einstieg">
+  <!--
+    EIGENES MATERIAL AUSTAUSCHEN:
+    - Video-URL:  Attribut src im <source>-Tag unten (aktuell assets/hero-bg.mp4)
+    - Poster:     Attribut poster am <video>-Tag unten (aktuell assets/hero-poster.jpg)
+    Platzhalter: Pexels „Soft Sunlit Curtain with Tree Shadows“ (ID 35161057),
+    Lizenz: Pexels License — kommerzielle Nutzung erlaubt, Namensnennung nicht nötig.
+    Original-CDN: https://videos.pexels.com/video-files/35161057/14894556_1920_1080_30fps.mp4
+  -->
+  <video
+    id="heroVideo"
+    class="hero-video__media"
+    poster="assets/hero-poster.jpg"
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    aria-hidden="true"
+  >
+    <source src="assets/hero-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video__overlay" aria-hidden="true"></div>
+  <div class="hero-video__content wrap">
+    <p class="hero-video__eyebrow">Mentales &amp; geistliches Coaching · Online &amp; vor Ort</p>
+    <h1>Ihr Leben findet zuerst<br><em>innen</em> statt.</h1>
+    <p class="hero-video__lead">Ein geschützter Raum für Psyche und Geist — ohne Warteliste, ohne Diagnose-Stempel.</p>
+    <div class="hero-video__cta">
+      <a class="btn btn--fill mag" href="#kontakt">Kostenloses Erstgespräch</a>
+      <a class="btn btn--ghost-light mag" href="#intro">Mehr erfahren</a>
+    </div>
+    <p class="hero-video__trust">Ohne Warteliste · Vertraulich · Persönlich</p>
+  </div>
+  <button type="button" class="hero-video__toggle" id="heroVideoToggle" aria-label="Video pausieren" aria-pressed="false" hidden>
+    <span class="hero-video__toggle-icon" aria-hidden="true"></span>
+  </button>
+</section>
+
 <!-- 1 · SPIEGEL: der Besucher liest seine eigenen Gedanken -->
-<section class="hero">
+<section class="hero" id="intro">
   <div class="wrap hero-grid">
     <div>
       <span class="thought rev" aria-live="polite">„<span id="type"></span><span class="caret"></span>“</span>
-      <h1 class="rev d1">Diese Gedanken kennst du. <em>Reden wir darüber.</em></h1>
+      <h2 class="rev d1">Diese Gedanken kennst du. <em>Reden wir darüber.</em></h2>
       <p class="lead rev d2">Ich bin Ephraim — Pastor, angehender Psychotherapeut nach dem Heilpraktikergesetz und dein Coach für das, was in dir passiert. Bei mir bekommst du beides an einem Ort: Psyche <span class="si">und</span> Geist.</p>
       <div class="cta-row rev d3">
         <a class="btn btn--fill mag" href="#check">Selbst-Check starten — 60 Sekunden</a>
@@ -297,5 +335,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<!-- Eigenes Hero-Material: Video in Zeile ~54 (source src), Poster in Zeile ~47 (video poster) austauschen. -->
 </body>
 </html>
