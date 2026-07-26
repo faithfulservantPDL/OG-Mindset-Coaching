@@ -570,4 +570,5 @@
   - Crossfade-Dauer:      FADE_MS (~16) und CSS transition opacity 1.2s in css/styles.css (.hero-video__media)
   - Poster-Fallback:      index.html, Attribut poster an #heroVideoA
   - Qualität:             Clips möglichst ≥1920×1080 (bzw. 1080×1920 Hochformat), H.264/MP4, ca. 3–4 MB/Datei
+  - Typewriter-Fragen:    Array `lines` in js/main.js (direkt unter dem Kommentar „Fragen-Array zum Austauschen“)
 */
