@@ -297,17 +297,22 @@
     });
   }
 
-  /* Typewriter: innerer Monolog */
+  /* Typewriter: eine Frage nach der anderen (tippen → Pause → löschen → nächste) */
+  /* Fragen-Array zum Austauschen: Zeile ~302 */
   var lines = [
-    "Warum grüble ich eigentlich ständig?",
-    "Ist das noch Stress — oder schon mehr?",
+    "Warum denke ich, wie ich denke?",
+    "Wie kann ich mein Mindset verändern?",
+    "Warum bin ich immer gestresst?",
+    "Kann ich meine Gefühle beeinflussen?",
     "Mit wem soll ich darüber reden?",
-    "Bin ich der Einzige, dem es so geht?",
-    "Geht es hier um meine Psyche — oder um mehr?",
   ];
+  var TYPE_MS = 50; /* Tippen: ca. 45–55 ms pro Zeichen */
+  var DELETE_MS = 28; /* Löschen etwas schneller */
+  var HOLD_MS = 1800; /* Pause bei fertiger Frage */
   var t = document.getElementById("type");
   if (t) {
     if (rm) {
+      /* prefers-reduced-motion: erste Frage statisch, ohne Animation */
       t.textContent = lines[0];
     } else {
       (function () {
@@ -321,16 +326,17 @@
             ci++;
             if (ci > s.length) {
               del = true;
-              return setTimeout(tick, 1900);
+              return setTimeout(tick, HOLD_MS);
             }
+            setTimeout(tick, TYPE_MS);
           } else {
             ci--;
             if (ci === 0) {
               del = false;
               li = (li + 1) % lines.length;
             }
+            setTimeout(tick, DELETE_MS);
           }
-          setTimeout(tick, del ? 26 : 52);
         }
         tick();
       })();
@@ -564,4 +570,5 @@
   - Crossfade-Dauer:      FADE_MS (~16) und CSS transition opacity 1.2s in css/styles.css (.hero-video__media)
   - Poster-Fallback:      index.html, Attribut poster an #heroVideoA
   - Qualität:             Clips möglichst ≥1920×1080 (bzw. 1080×1920 Hochformat), H.264/MP4, ca. 3–4 MB/Datei
+  - Typewriter-Fragen:    Array `lines` in js/main.js (Suche nach „var lines =“) — eine Frage nach der anderen
 */
