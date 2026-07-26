@@ -10,7 +10,7 @@
       "assets/videos/clip-02-water.mp4", /* Natur-Metapher: ruhiges Wasser */
       "assets/videos/clip-03-room.mp4", /* geschützter Raum: sonniger Innenraum */
       "assets/videos/clip-04-candle.mp4", /* Detail/Ruhe: Kerzenlicht */
-      "assets/videos/clip-05-trees.mp4", /* Klarheit: Licht durch Bäume */
+      "assets/videos/clip-05-light.mp4", /* Klarheit: Licht/Baumschatten am Vorhang */
     ];
     var CLIP_MS = 5000; /* Anzeigedauer pro Clip in ms (vor Crossfade) */
     var FADE_MS = 1200; /* muss zur CSS-Transition (.hero-video__media) passen */
@@ -46,24 +46,39 @@
     function scheduleNext() {
       clearTimer();
       if (paused || rm) return;
+      var following = (index + 1) % clips.length;
+      ensureLoaded(players[1 - active], clips[following]);
       timer = setTimeout(function () {
-        crossfadeTo((index + 1) % clips.length);
+        crossfadeTo(following);
       }, CLIP_MS);
     }
 
     function loadInto(video, src) {
       return new Promise(function (resolve) {
+        var settled = false;
         var done = function () {
+          if (settled) return;
+          settled = true;
           video.removeEventListener("loadeddata", done);
+          video.removeEventListener("canplay", done);
           video.removeEventListener("error", done);
+          video.setAttribute("data-src", src);
           resolve();
         };
         video.addEventListener("loadeddata", done);
+        video.addEventListener("canplay", done);
         video.addEventListener("error", done);
         video.src = src;
         video.load();
-        if (video.readyState >= 2) done();
+        if (video.readyState >= 3) done();
       });
+    }
+
+    function ensureLoaded(video, src) {
+      if (video.getAttribute("data-src") === src && video.readyState >= 2) {
+        return Promise.resolve();
+      }
+      return loadInto(video, src);
     }
 
     function playSafe(video) {
@@ -75,6 +90,27 @@
       return Promise.resolve();
     }
 
+    function waitForFrame(video) {
+      return new Promise(function (resolve) {
+        var settled = false;
+        var finish = function () {
+          if (settled) return;
+          settled = true;
+          resolve();
+        };
+        if (typeof video.requestVideoFrameCallback === "function") {
+          video.requestVideoFrameCallback(function () {
+            finish();
+          });
+        } else {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(finish);
+          });
+        }
+        setTimeout(finish, 400);
+      });
+    }
+
     function crossfadeTo(nextIndex) {
       if (fading || paused || rm) return;
       fading = true;
@@ -83,27 +119,44 @@
       var incoming = players[nextPlayer];
       var outgoing = players[active];
 
-      loadInto(incoming, clips[nextIndex]).then(function () {
-        if (paused) {
-          fading = false;
-          return;
-        }
-        incoming.currentTime = 0;
-        playSafe(incoming).then(function () {
+      /* Ausgehend bleibt voll sichtbar (is-active), bis Incoming darüber eingeblendet ist */
+      incoming.classList.remove("is-active", "is-top");
+
+      ensureLoaded(incoming, clips[nextIndex])
+        .then(function () {
+          if (paused) {
+            fading = false;
+            return null;
+          }
+          try {
+            incoming.currentTime = 0;
+          } catch (e) {}
+          return playSafe(incoming).then(function () {
+            return waitForFrame(incoming);
+          });
+        })
+        .then(function (ready) {
+          if (ready === null || paused) {
+            fading = false;
+            return;
+          }
+          incoming.classList.add("is-top");
+          void incoming.offsetWidth;
           incoming.classList.add("is-active");
-          outgoing.classList.remove("is-active");
           setTimeout(function () {
+            outgoing.classList.remove("is-active", "is-top");
             outgoing.pause();
+            incoming.classList.remove("is-top");
             active = nextPlayer;
             index = nextIndex;
             fading = false;
             scheduleNext();
           }, FADE_MS);
         });
-      });
     }
 
     function onEnded() {
+      /* Sicherheit: Wechsel vor dunklem Endframe / natürlichem Ende */
       if (paused || fading || rm) return;
       crossfadeTo((index + 1) % clips.length);
     }
@@ -120,14 +173,15 @@
       return;
     }
 
-    loadInto(a, clips[0]).then(function () {
+    ensureLoaded(a, clips[0]).then(function () {
       a.setAttribute("autoplay", "");
+      a.classList.add("is-active");
       playSafe(a).then(function () {
+        return waitForFrame(a);
+      }).then(function () {
         started = true;
         setUiPlaying(true);
         scheduleNext();
-        /* nächsten Clip vorladen */
-        if (clips.length > 1) loadInto(b, clips[1]);
       });
     });
 
@@ -243,17 +297,22 @@
     });
   }
 
-  /* Typewriter: innerer Monolog */
+  /* Typewriter: eine Frage nach der anderen (tippen → Pause → löschen → nächste) */
+  /* Fragen-Array zum Austauschen: steht in der nächsten Zeile (var lines) */
   var lines = [
-    "Warum grüble ich eigentlich ständig?",
-    "Ist das noch Stress — oder schon mehr?",
+    "Warum denke ich, wie ich denke?",
+    "Wie kann ich mein Mindset verändern?",
+    "Warum bin ich immer gestresst?",
+    "Kann ich meine Gefühle beeinflussen?",
     "Mit wem soll ich darüber reden?",
-    "Bin ich der Einzige, dem es so geht?",
-    "Geht es hier um meine Psyche — oder um mehr?",
   ];
+  var TYPE_MS = 50; /* Tippen: ca. 45–55 ms pro Zeichen */
+  var DELETE_MS = 28; /* Löschen etwas schneller */
+  var HOLD_MS = 1800; /* Pause bei fertiger Frage */
   var t = document.getElementById("type");
   if (t) {
     if (rm) {
+      /* prefers-reduced-motion: erste Frage statisch, ohne Animation */
       t.textContent = lines[0];
     } else {
       (function () {
@@ -267,16 +326,17 @@
             ci++;
             if (ci > s.length) {
               del = true;
-              return setTimeout(tick, 1900);
+              return setTimeout(tick, HOLD_MS);
             }
+            setTimeout(tick, TYPE_MS);
           } else {
             ci--;
             if (ci === 0) {
               del = false;
               li = (li + 1) % lines.length;
             }
+            setTimeout(tick, DELETE_MS);
           }
-          setTimeout(tick, del ? 26 : 52);
         }
         tick();
       })();
@@ -506,7 +566,9 @@
   === Hero-Video-Zusammenschnitt anpassen ===
   - clips-Array:          js/main.js, Zeile ~8 (Pfade zu MP4-Dateien hinzufügen/ersetzen/entfernen)
   - Clip-Anzahl:          einfach Einträge im Array ändern — Loop läuft automatisch über clips.length
-  - Anzeigedauer/Clip:    CLIP_MS in js/main.js, Zeile ~15 (Standard: 5000 ms)
+  - Anzeigedauer/Clip:    CLIP_MS in js/main.js, Zeile ~15 (Standard: 5000 ms; kürzer setzen, falls ein Clip am Ende dunkel wird)
   - Crossfade-Dauer:      FADE_MS (~16) und CSS transition opacity 1.2s in css/styles.css (.hero-video__media)
   - Poster-Fallback:      index.html, Attribut poster an #heroVideoA
+  - Qualität:             Clips möglichst ≥1920×1080 (bzw. 1080×1920 Hochformat), H.264/MP4, ca. 3–4 MB/Datei
+  - Typewriter-Fragen:    Array `lines` in js/main.js (direkt unter dem Kommentar „Fragen-Array zum Austauschen“)
 */
