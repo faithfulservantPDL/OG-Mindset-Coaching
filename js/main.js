@@ -6,11 +6,11 @@
   (function initHeroVideo() {
     /* === Clips hier austauschen (eigene Dateien / URLs) === */
     var clips = [
-      "assets/videos/clip-01-window.mp4", /* nachdenklich: Silhouette am Fenster */
-      "assets/videos/clip-02-fog.mp4", /* Natur: Nebel am Morgen */
-      "assets/videos/clip-03-lake.mp4", /* Natur: ruhiges Wasser */
-      "assets/videos/clip-04-room.mp4", /* geschützter Raum: sonniger Innenraum */
-      "assets/videos/clip-05-light.mp4", /* Klarheit: Licht/Baumschatten am Vorhang */
+      "assets/videos/clip-01-steam.mp4", /* Innehalten: dampfende Tasse */
+      "assets/videos/clip-02-water.mp4", /* Natur-Metapher: ruhiges Wasser */
+      "assets/videos/clip-03-room.mp4", /* geschützter Raum: sonniger Innenraum */
+      "assets/videos/clip-04-candle.mp4", /* Detail/Ruhe: Kerzenlicht */
+      "assets/videos/clip-05-trees.mp4", /* Klarheit: Licht durch Bäume */
     ];
     var CLIP_MS = 5000; /* Anzeigedauer pro Clip in ms (vor Crossfade) */
     var FADE_MS = 1200; /* muss zur CSS-Transition (.hero-video__media) passen */
