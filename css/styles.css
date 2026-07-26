@@ -61,7 +61,42 @@ nav a:hover{color:var(--blue)}
 .btn--fill:hover{background:var(--blue-hi);box-shadow:0 14px 34px -12px rgba(24,0,172,.55)}
 .btn--ghost{background:#fff;color:var(--blue)}
 .btn--ghost:hover{background:var(--blue-04)}
+.btn--ghost-light{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.45);backdrop-filter:blur(8px)}
+.btn--ghost-light:hover{background:rgba(255,255,255,.16);box-shadow:0 14px 34px -16px rgba(0,0,0,.45)}
 .btn--sm{padding:11px 20px;font-size:.84rem}
+
+/* VOLLBILD-VIDEO-HERO */
+.hero-video{position:relative;min-height:90vh;overflow:hidden;padding:0;display:flex;align-items:flex-end;
+  background:#0B0B14;color:#fff;isolation:isolate}
+.hero-video__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero-video__overlay{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(11,11,20,.55) 0%,
+    rgba(11,11,20,.18) 42%,
+    rgba(11,11,20,.08) 55%,
+    rgba(11,11,20,.9) 100%)}
+.hero-video__content{position:relative;z-index:2;width:min(1200px,100% - 48px);margin-inline:auto;
+  padding:clamp(100px,14vh,160px) 0 clamp(48px,8vh,80px);max-width:38rem}
+.hero-video__eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);margin:0 0 22px}
+.hero-video h1{color:#fff;font-size:clamp(2.5rem,6.2vw,4.6rem);margin:0;max-width:14ch}
+.hero-video h1 em{color:#fff;opacity:.92}
+.hero-video__lead{margin:22px 0 0;max-width:38ch;color:rgba(255,255,255,.78);
+  font-size:clamp(1.02rem,1.45vw,1.18rem);line-height:1.6}
+.hero-video__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-video__trust{margin:28px 0 0;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.55)}
+.hero-video__toggle{position:absolute;right:clamp(16px,3vw,28px);bottom:clamp(16px,3vw,28px);z-index:3;
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+  background:rgba(11,11,20,.45);color:#fff;cursor:pointer;display:grid;place-items:center;
+  backdrop-filter:blur(10px);transition:background .18s ease,border-color .18s ease}
+.hero-video__toggle:hover{background:rgba(11,11,20,.7);border-color:rgba(255,255,255,.6)}
+.hero-video__toggle-icon{width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;
+  border-color:transparent transparent transparent #fff;margin-left:2px}
+.hero-video__toggle[aria-pressed="false"] .hero-video__toggle-icon{width:10px;height:12px;margin:0;
+  border:none;background:linear-gradient(90deg,#fff 0,#fff 35%,transparent 35%,transparent 65%,#fff 65%,#fff 100%)}
+.hero-video.is-reduced .hero-video__media{display:none}
+.hero-video.is-reduced{background:center/cover no-repeat url("../assets/hero-poster.jpg")}
 
 /* HERO: innerer Monolog */
 .hero{padding-top:clamp(60px,7vw,100px)}
@@ -71,6 +106,7 @@ nav a:hover{color:var(--blue)}
 .thought .caret{display:inline-block;width:2px;height:1em;background:var(--blue);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .hero .lead{margin-top:28px;max-width:44ch}
+.hero h2{font-size:clamp(2.2rem,5vw,3.8rem);letter-spacing:-.04em;line-height:1.02}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
 .trust{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:30px;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
 .trust span{display:flex;align-items:center;gap:8px}
@@ -242,9 +278,17 @@ footer{border-top:1px solid var(--line);padding:54px 0 40px}
   .about-fig .stamp{right:-8px;bottom:-16px;width:96px;height:96px}
   #sticky-cta span{display:none}
   #sticky-cta{padding:10px}
+  .hero-video{min-height:88vh;align-items:flex-end}
+  .hero-video__content{padding:96px 0 72px;width:min(1200px,100% - 36px)}
+  .hero-video__cta{flex-direction:column;align-items:stretch}
+  .hero-video__cta .btn{width:100%}
+  .hero-video__toggle{right:14px;bottom:14px}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
   .rev{opacity:1;transform:none}
+  .hero-video__media{display:none}
+  .hero-video{background:center/cover no-repeat url("../assets/hero-poster.jpg")}
+  .hero-video__toggle{display:none}
 }

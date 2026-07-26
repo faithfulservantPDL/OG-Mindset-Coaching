@@ -2,6 +2,48 @@
   var fine = matchMedia("(pointer:fine)").matches;
   var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
 
+  /* Video-Hero: Autoplay nur ohne reduced-motion + Pause/Play */
+  (function initHeroVideo() {
+    var section = document.querySelector(".hero-video");
+    var video = document.getElementById("heroVideo");
+    var toggle = document.getElementById("heroVideoToggle");
+    if (!section || !video) return;
+
+    function setPlaying(playing) {
+      if (!toggle) return;
+      toggle.hidden = false;
+      toggle.setAttribute("aria-pressed", playing ? "false" : "true");
+      toggle.setAttribute("aria-label", playing ? "Video pausieren" : "Video abspielen");
+    }
+
+    if (rm) {
+      section.classList.add("is-reduced");
+      video.removeAttribute("autoplay");
+      video.pause();
+      if (toggle) toggle.hidden = true;
+      return;
+    }
+
+    video.setAttribute("autoplay", "");
+    var playPromise = video.play();
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.then(function () { setPlaying(true); }).catch(function () { setPlaying(false); });
+    } else {
+      setPlaying(!video.paused);
+    }
+
+    if (toggle) {
+      toggle.addEventListener("click", function () {
+        if (video.paused) {
+          video.play().then(function () { setPlaying(true); }).catch(function () {});
+        } else {
+          video.pause();
+          setPlaying(false);
+        }
+      });
+    }
+  })();
+
   /* Reveal */
   var els = document.querySelectorAll(".rev");
   if ("IntersectionObserver" in window) {
