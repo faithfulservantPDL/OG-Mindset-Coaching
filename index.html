@@ -31,28 +31,32 @@
 
 <main id="top">
 
-<!-- Vollbild-Video-Hero (Stil: faithfulservant.de) -->
+<!-- Vollbild-Video-Hero mit Crossfade-Zusammenschnitt (Stil: faithfulservant.de) -->
 <section class="hero-video" aria-label="Einstieg">
   <!--
-    EIGENES MATERIAL AUSTAUSCHEN:
-    - Video-URL:  Attribut src im <source>-Tag unten (aktuell assets/hero-bg.mp4)
-    - Poster:     Attribut poster am <video>-Tag unten (aktuell assets/hero-poster.jpg)
-    Platzhalter: Pexels „Soft Sunlit Curtain with Tree Shadows“ (ID 35161057),
-    Lizenz: Pexels License — kommerzielle Nutzung erlaubt, Namensnennung nicht nötig.
-    Original-CDN: https://videos.pexels.com/video-files/35161057/14894556_1920_1080_30fps.mp4
+    Clip-Playlist steht in js/main.js (Array `clips`).
+    Poster-Fallback: Attribut poster an #heroVideoA (assets/hero-poster.jpg).
+    Platzhalter: 5 ruhige Pexels-Clips (kühl/gedämpftes Morgenlicht), Lizenz Pexels —
+    kommerzielle Nutzung erlaubt, Namensnennung nicht nötig.
+    IDs: 8860235, 31808103, 32650089, 29513615, 35161057
   -->
-  <video
-    id="heroVideo"
-    class="hero-video__media"
-    poster="assets/hero-poster.jpg"
-    muted
-    loop
-    playsinline
-    preload="metadata"
-    aria-hidden="true"
-  >
-    <source src="assets/hero-bg.mp4" type="video/mp4">
-  </video>
+  <div class="hero-video__stage" aria-hidden="true">
+    <video
+      id="heroVideoA"
+      class="hero-video__media is-active"
+      poster="assets/hero-poster.jpg"
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+    <video
+      id="heroVideoB"
+      class="hero-video__media"
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+  </div>
   <div class="hero-video__overlay" aria-hidden="true"></div>
   <div class="hero-video__content wrap">
     <p class="hero-video__eyebrow">Mentales &amp; geistliches Coaching · Online &amp; vor Ort</p>
@@ -335,6 +339,11 @@
 </footer>
 
 <script src="js/main.js"></script>
-<!-- Eigenes Hero-Material: Video in Zeile ~54 (source src), Poster in Zeile ~47 (video poster) austauschen. -->
+<!--
+  Hero-Clips austauschen:
+  - Playlist-Array `clips` in js/main.js (siehe Kommentar dort am Dateiende)
+  - Anzeigedauer pro Clip: Konstante CLIP_MS in js/main.js (~5000)
+  - Poster-Standbild: Attribut poster an #heroVideoA in index.html
+-->
 </body>
 </html>

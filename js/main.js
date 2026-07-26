@@ -2,43 +2,150 @@
   var fine = matchMedia("(pointer:fine)").matches;
   var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
 
-  /* Video-Hero: Autoplay nur ohne reduced-motion + Pause/Play */
+  /* Video-Hero: Crossfade-Playlist aus mehreren Clips */
   (function initHeroVideo() {
-    var section = document.querySelector(".hero-video");
-    var video = document.getElementById("heroVideo");
-    var toggle = document.getElementById("heroVideoToggle");
-    if (!section || !video) return;
+    /* === Clips hier austauschen (eigene Dateien / URLs) === */
+    var clips = [
+      "assets/videos/clip-01-window.mp4", /* nachdenklich: Silhouette am Fenster */
+      "assets/videos/clip-02-fog.mp4", /* Natur: Nebel am Morgen */
+      "assets/videos/clip-03-lake.mp4", /* Natur: ruhiges Wasser */
+      "assets/videos/clip-04-room.mp4", /* geschützter Raum: sonniger Innenraum */
+      "assets/videos/clip-05-light.mp4", /* Klarheit: Licht/Baumschatten am Vorhang */
+    ];
+    var CLIP_MS = 5000; /* Anzeigedauer pro Clip in ms (vor Crossfade) */
+    var FADE_MS = 1200; /* muss zur CSS-Transition (.hero-video__media) passen */
 
-    function setPlaying(playing) {
+    var section = document.querySelector(".hero-video");
+    var a = document.getElementById("heroVideoA");
+    var b = document.getElementById("heroVideoB");
+    var toggle = document.getElementById("heroVideoToggle");
+    if (!section || !a || !b || !clips.length) return;
+
+    var players = [a, b];
+    var active = 0;
+    var index = 0;
+    var timer = null;
+    var fading = false;
+    var paused = false;
+    var started = false;
+
+    function setUiPlaying(playing) {
       if (!toggle) return;
       toggle.hidden = false;
       toggle.setAttribute("aria-pressed", playing ? "false" : "true");
       toggle.setAttribute("aria-label", playing ? "Video pausieren" : "Video abspielen");
     }
 
+    function clearTimer() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }
+
+    function scheduleNext() {
+      clearTimer();
+      if (paused || rm) return;
+      timer = setTimeout(function () {
+        crossfadeTo((index + 1) % clips.length);
+      }, CLIP_MS);
+    }
+
+    function loadInto(video, src) {
+      return new Promise(function (resolve) {
+        var done = function () {
+          video.removeEventListener("loadeddata", done);
+          video.removeEventListener("error", done);
+          resolve();
+        };
+        video.addEventListener("loadeddata", done);
+        video.addEventListener("error", done);
+        video.src = src;
+        video.load();
+        if (video.readyState >= 2) done();
+      });
+    }
+
+    function playSafe(video) {
+      video.muted = true;
+      var p = video.play();
+      if (p && typeof p.then === "function") {
+        return p.catch(function () {});
+      }
+      return Promise.resolve();
+    }
+
+    function crossfadeTo(nextIndex) {
+      if (fading || paused || rm) return;
+      fading = true;
+      clearTimer();
+      var nextPlayer = 1 - active;
+      var incoming = players[nextPlayer];
+      var outgoing = players[active];
+
+      loadInto(incoming, clips[nextIndex]).then(function () {
+        if (paused) {
+          fading = false;
+          return;
+        }
+        incoming.currentTime = 0;
+        playSafe(incoming).then(function () {
+          incoming.classList.add("is-active");
+          outgoing.classList.remove("is-active");
+          setTimeout(function () {
+            outgoing.pause();
+            active = nextPlayer;
+            index = nextIndex;
+            fading = false;
+            scheduleNext();
+          }, FADE_MS);
+        });
+      });
+    }
+
+    function onEnded() {
+      if (paused || fading || rm) return;
+      crossfadeTo((index + 1) % clips.length);
+    }
+
+    a.addEventListener("ended", onEnded);
+    b.addEventListener("ended", onEnded);
+
     if (rm) {
       section.classList.add("is-reduced");
-      video.removeAttribute("autoplay");
-      video.pause();
+      a.removeAttribute("autoplay");
+      a.pause();
+      b.pause();
       if (toggle) toggle.hidden = true;
       return;
     }
 
-    video.setAttribute("autoplay", "");
-    var playPromise = video.play();
-    if (playPromise && typeof playPromise.then === "function") {
-      playPromise.then(function () { setPlaying(true); }).catch(function () { setPlaying(false); });
-    } else {
-      setPlaying(!video.paused);
-    }
+    loadInto(a, clips[0]).then(function () {
+      a.setAttribute("autoplay", "");
+      playSafe(a).then(function () {
+        started = true;
+        setUiPlaying(true);
+        scheduleNext();
+        /* nächsten Clip vorladen */
+        if (clips.length > 1) loadInto(b, clips[1]);
+      });
+    });
 
     if (toggle) {
       toggle.addEventListener("click", function () {
-        if (video.paused) {
-          video.play().then(function () { setPlaying(true); }).catch(function () {});
+        if (!started) return;
+        if (paused) {
+          paused = false;
+          playSafe(players[active]).then(function () {
+            setUiPlaying(true);
+            scheduleNext();
+          });
         } else {
-          video.pause();
-          setPlaying(false);
+          paused = true;
+          clearTimer();
+          players[0].pause();
+          players[1].pause();
+          setUiPlaying(false);
         }
       });
     }
@@ -394,3 +501,12 @@
   var yr = document.getElementById("yr");
   if (yr) yr.textContent = new Date().getFullYear();
 })();
+
+/*
+  === Hero-Video-Zusammenschnitt anpassen ===
+  - clips-Array:          js/main.js, Zeile ~8 (Pfade zu MP4-Dateien hinzufügen/ersetzen/entfernen)
+  - Clip-Anzahl:          einfach Einträge im Array ändern — Loop läuft automatisch über clips.length
+  - Anzeigedauer/Clip:    CLIP_MS in js/main.js, Zeile ~15 (Standard: 5000 ms)
+  - Crossfade-Dauer:      FADE_MS (~16) und CSS transition opacity 1.2s in css/styles.css (.hero-video__media)
+  - Poster-Fallback:      index.html, Attribut poster an #heroVideoA
+*/
