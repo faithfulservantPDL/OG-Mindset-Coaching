@@ -501,3 +501,12 @@
   var yr = document.getElementById("yr");
   if (yr) yr.textContent = new Date().getFullYear();
 })();
+
+/*
+  === Hero-Video-Zusammenschnitt anpassen ===
+  - clips-Array:          js/main.js, Zeile ~8 (Pfade zu MP4-Dateien hinzufügen/ersetzen/entfernen)
+  - Clip-Anzahl:          einfach Einträge im Array ändern — Loop läuft automatisch über clips.length
+  - Anzeigedauer/Clip:    CLIP_MS in js/main.js, Zeile ~15 (Standard: 5000 ms)
+  - Crossfade-Dauer:      FADE_MS (~16) und CSS transition opacity 1.2s in css/styles.css (.hero-video__media)
+  - Poster-Fallback:      index.html, Attribut poster an #heroVideoA
+*/
