@@ -65,10 +65,13 @@ nav a:hover{color:var(--blue)}
 .btn--ghost-light:hover{background:rgba(255,255,255,.16);box-shadow:0 14px 34px -16px rgba(0,0,0,.45)}
 .btn--sm{padding:11px 20px;font-size:.84rem}
 
-/* VOLLBILD-VIDEO-HERO */
+/* VOLLBILD-VIDEO-HERO (Crossfade-Zusammenschnitt) */
 .hero-video{position:relative;min-height:90vh;overflow:hidden;padding:0;display:flex;align-items:flex-end;
   background:#0B0B14;color:#fff;isolation:isolate}
-.hero-video__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero-video__stage{position:absolute;inset:0;z-index:0}
+.hero-video__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.2s ease;background:#0B0B14}
+.hero-video__media.is-active{opacity:1}
 .hero-video__overlay{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,
     rgba(11,11,20,.55) 0%,
@@ -95,7 +98,7 @@ nav a:hover{color:var(--blue)}
   border-color:transparent transparent transparent #fff;margin-left:2px}
 .hero-video__toggle[aria-pressed="false"] .hero-video__toggle-icon{width:10px;height:12px;margin:0;
   border:none;background:linear-gradient(90deg,#fff 0,#fff 35%,transparent 35%,transparent 65%,#fff 65%,#fff 100%)}
-.hero-video.is-reduced .hero-video__media{display:none}
+.hero-video.is-reduced .hero-video__stage{display:none}
 .hero-video.is-reduced{background:center/cover no-repeat url("../assets/hero-poster.jpg")}
 
 /* HERO: innerer Monolog */
@@ -288,7 +291,7 @@ footer{border-top:1px solid var(--line);padding:54px 0 40px}
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
   .rev{opacity:1;transform:none}
-  .hero-video__media{display:none}
+  .hero-video__stage{display:none}
   .hero-video{background:center/cover no-repeat url("../assets/hero-poster.jpg")}
   .hero-video__toggle{display:none}
 }
