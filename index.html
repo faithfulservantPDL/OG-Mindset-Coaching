@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OG Mindset Coaching — Wann hast du zuletzt mit dir selbst gesprochen?</title>
+<meta name="description" content="Mentales und geistliches Coaching mit Ephraim. Mach den 60-Sekunden-Selbst-Check und sichere dir dein kostenloses Erstgespräch — ohne Warteliste.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="glow" aria-hidden="true"></div>
+<div id="prog" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top"><img src="assets/logo.png" alt="OG Mindset Coaching"></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false">Menü</button>
+    <nav id="nav">
+      <a href="#check">Selbst-Check</a>
+      <a href="#ansatz">Ansatz</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#ueber-mich">Über mich</a>
+      <a href="#faq">Fragen</a>
+      <a class="btn btn--fill btn--sm mag" href="#kontakt">Kostenloses Erstgespräch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- 1 · SPIEGEL: der Besucher liest seine eigenen Gedanken -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="thought rev" aria-live="polite">„<span id="type"></span><span class="caret"></span>“</span>
+      <h1 class="rev d1">Diese Gedanken kennst du. <em>Reden wir darüber.</em></h1>
+      <p class="lead rev d2">Ich bin Ephraim — Pastor, angehender Psychotherapeut nach dem Heilpraktikergesetz und dein Coach für das, was in dir passiert. Bei mir bekommst du beides an einem Ort: Psyche <span class="si">und</span> Geist.</p>
+      <div class="cta-row rev d3">
+        <a class="btn btn--fill mag" href="#check">Selbst-Check starten — 60 Sekunden</a>
+        <a class="btn btn--ghost mag" href="#kontakt">Direkt Erstgespräch sichern</a>
+      </div>
+      <div class="trust rev d3">
+        <span><i></i>Kostenloses Erstgespräch</span>
+        <span><i></i>Keine Warteliste</span>
+        <span><i></i>Online &amp; vor Ort</span>
+      </div>
+    </div>
+    <figure class="hero-fig rev d2" style="margin:0">
+      <img src="assets/hero.jpg" alt="Ephraim, Coach bei OG Mindset Coaching" width="1100" height="1375">
+      <div class="float-tag ft1"><b>SPHÄRE I</b> Psyche</div>
+      <div class="float-tag ft2"><b>SPHÄRE II</b> Geist</div>
+    </figure>
+  </div>
+</section>
+
+<!-- 2 · AGITATE: normalisieren statt beschämen -->
+<section class="mirror">
+  <div class="wrap">
+    <div class="center">
+      <p class="kicker rev">Kommt dir das bekannt vor?</p>
+      <h2 class="mx rev">Dein Körper bekommt Training.<br>Deine Psyche bekommt <em>„irgendwann“.</em></h2>
+    </div>
+    <div class="mirror-grid">
+      <div class="m-card tilt rev"><span class="q">„Ist das, was ich fühle, eigentlich noch normal?“</span><p>Anders als beim Körper merken viele erst spät, dass sie innerlich geschwächt sind. Die Frage zu stellen ist kein Zeichen von Krankheit — sondern von Aufmerksamkeit.</p></div>
+      <div class="m-card tilt rev d1"><span class="q">„Ich will deswegen nicht gleich als krank gelten.“</span><p>Musst du auch nicht. Coaching ist ein geschützter Raum ohne Diagnose-Stempel — du sprichst mit einem Menschen, nicht mit einer Akte.</p></div>
+      <div class="m-card tilt rev d2"><span class="q">„Bis ich einen Termin bekomme, vergehen Monate.“</span><p>Wartezeiten bei Psychiatern und Psychologen sind erschreckend lang. Mein Erstgespräch bekommst du ohne Warteliste — und es kostet dich nichts.</p></div>
+    </div>
+    <div class="mirror-after rev">
+      <span class="si">Du bist nicht kaputt. Du bist <b>untrainiert</b> — und das lässt sich ändern.</span>
+    </div>
+    <div class="numbers">
+      <div class="num rev"><b data-count="0">0</b><small>Tage Warteliste</small></div>
+      <div class="num rev d1"><b data-count="2">0</b><small>Sphären — Psyche &amp; Geist</small></div>
+      <div class="num rev d2"><b data-count="100">0</b><small>% du gibst den Ton an</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · MICRO-COMMITMENT: interaktiver Selbst-Check -->
+<section id="check">
+  <div class="wrap">
+    <div class="center">
+      <p class="kicker rev">Der Selbst-Check</p>
+      <h2 class="mx rev">Finde in 60 Sekunden heraus, <em>wo du stehst.</em></h2>
+      <p class="lead mx rev d1" style="margin-top:22px">Vier Fragen, keine Anmeldung, kein Kleingedrucktes. Am Ende weißt du, welcher Fokus dir gerade am meisten bringt.</p>
+    </div>
+    <div class="check-shell rev d1">
+      <div class="check-head"><b>Mindset-Kompass</b><span id="q-count">FRAGE 1 / 4</span></div>
+      <div class="check-body" id="check-body"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · LÖSUNG: die zwei Sphären als Schalter -->
+<section class="spheres" id="ansatz">
+  <div class="wrap center">
+    <p class="kicker rev">Was mich anders macht</p>
+    <h2 class="mx rev">Kirche behandelt den Geist. Psychologie die Psyche. <em>Ich trenne das nicht.</em></h2>
+    <p class="lead mx rev d1" style="margin-top:22px">In Deutschland werden beide Sphären selten bis nie zusammen betrachtet. Bei mir wählst du selbst, wie viel von welcher Ebene du möchtest — per Gespräch, nicht per Dogma.</p>
+    <div class="toggle rev d2" role="tablist">
+      <div class="pill" id="pill"></div>
+      <button class="on" id="tb-p" role="tab" aria-selected="true">Psyche</button>
+      <button id="tb-g" role="tab" aria-selected="false">Geist</button>
+    </div>
+    <div class="sph-panels">
+      <div class="sph on" id="sp-p" role="tabpanel">
+        <div>
+          <p class="kicker" style="margin-bottom:12px">Sphäre I</p>
+          <h3>Verstehen, was in dir passiert.</h3>
+          <p style="font-size:.95rem">Fundiert durch meine Ausbildung zum Psychotherapeuten nach dem Heilpraktikergesetz — verständlich statt Fachchinesisch.</p>
+        </div>
+        <ul>
+          <li>Aufklärung über deine Psyche und dein inneres Erleben</li>
+          <li>Umgang mit Gedanken und Gefühlen — konkret und alltagstauglich</li>
+          <li>Innere Stabilität und ein tragfähiges Mindset aufbauen</li>
+          <li>Beratung bei psychischen Belastungen, inkl. klarer Empfehlung, wenn mehr nötig ist</li>
+        </ul>
+      </div>
+      <div class="sph" id="sp-g" role="tabpanel">
+        <div>
+          <p class="kicker" style="margin-bottom:12px">Sphäre II</p>
+          <h3>Wenn es um mehr als Gedanken geht.</h3>
+          <p style="font-size:.95rem">Aus meiner Praxis als Pastor einer dynamischen Gemeinde und Mitarbeiter bei Bibel TV — ausschließlich, wenn du es möchtest.</p>
+        </div>
+        <ul>
+          <li>Seelsorgerliche Begleitung in einem geschützten Rahmen</li>
+          <li>Geistliche Führung bei Fragen, die tiefer gehen</li>
+          <li>Gebet — auf deinen ausdrücklichen Wunsch</li>
+          <li>Balance zwischen geistlichem Anliegen und mentaler Gesundheit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · WEG + RISIKO-UMKEHR -->
+<section id="ablauf">
+  <div class="wrap">
+    <div class="center">
+      <p class="kicker rev">So einfach ist der Start</p>
+      <h2 class="mx rev">Drei Schritte. Der erste kostet dich <em>nur eine Nachricht.</em></h2>
+    </div>
+    <div class="steps">
+      <div class="stepc rev"><h3>Formular ausfüllen</h3><p>Zwei Minuten: Wer bist du, worum geht es? Mehr brauche ich nicht, um mir ein erstes Bild zu machen.</p></div>
+      <div class="stepc rev d1"><h3>Kostenloses Erstgespräch</h3><p>Ich melde mich persönlich bei dir. Wir sprechen unverbindlich — und du entscheidest danach in Ruhe.</p></div>
+      <div class="stepc rev d2"><h3>Dein Plan</h3><p>Wir entwickeln gemeinsam deinen Weg. Manches klärt sich in wenigen Sessions, anderes braucht Zeit — ich richte mich nach dir.</p></div>
+    </div>
+    <div class="risk rev">
+      <p><b>Ohne Risiko:</b> Das Erstgespräch ist kostenlos, es gibt keine Mindestlaufzeit und nichts wird über dich hinweg entschieden. Du gibst den Ton an — ich begleite.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · VERTRAUEN: Über mich -->
+<section class="mirror" id="ueber-mich">
+  <div class="wrap about">
+    <figure class="about-fig rev" style="margin:0">
+      <img src="assets/about.jpg" alt="Vincent Oghagha-Oghene Ephraim" width="1000" height="1333">
+      <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
+        <defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+        <circle cx="60" cy="60" r="59" fill="#fff" stroke="rgba(24,0,172,.25)"/>
+        <text font-family="JetBrains Mono,monospace" font-size="10.5" letter-spacing="2.5" fill="#1800AC">
+          <textPath href="#circ">WELTEN VERÄNDERN · UM DIE WELT ZU VERÄNDERN ·</textPath>
+        </text>
+        <circle cx="60" cy="60" r="7" fill="#1800AC"/>
+      </svg>
+    </figure>
+    <div>
+      <p class="kicker rev">Wer hier mit dir spricht</p>
+      <h2 class="rev">Ich verkaufe dir nichts, woran ich nicht <em>selbst arbeite.</em></h2>
+      <ul class="roles rev d1">
+        <li class="hi">Pastor einer Gemeinde</li>
+        <li class="hi">Mitarbeiter bei Bibel TV</li>
+        <li>Psychotherapie n. HeilprG — in Ausbildung</li>
+        <li>Musiker</li>
+        <li>Fitness</li>
+      </ul>
+      <p class="rev d1">Mein Name ist Vincent Oghagha-Oghene Ephraim. Mentale Gesundheit und Wachstum spielen in jedem Bereich meines Lebens eine Rolle — im Studium der Psychotherapie, im Gemeindedienst, beim Training, in der Musik.</p>
+      <p class="rev d2">Mein Anspruch ist, mit dir zu teilen, woran ich selbst nachhaltig arbeite: innerlich frei, balanciert und gesund zu sein. Dein Wohl liegt mir am Herzen. Dein Wachstum ist mein Ziel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · EINWÄNDE: FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="center">
+      <p class="kicker rev">Bevor du fragst</p>
+      <h2 class="mx rev">Die Fragen, die sich <em>jeder</em> stellt.</h2>
+    </div>
+    <div class="faq rev d1">
+      <details>
+        <summary>Ist Coaching dasselbe wie Therapie?</summary>
+        <p>Nein. Coaching ist Begleitung, Aufklärung und Training für deine mentale Gesundheit — wie ein Coach im Fitnessstudio, nur für innen. Therapie im Sinne des Heilpraktikergesetzes biete ich erst nach bestandener Prüfung an. Und wenn im Gespräch deutlich wird, dass du ärztliche oder therapeutische Hilfe brauchst, sage ich dir das offen und helfe dir, sie zu finden.</p>
+      </details>
+      <details>
+        <summary>Muss ich gläubig sein, um zu dir zu kommen?</summary>
+        <p>Nein. Die geistliche Ebene ist ein Angebot, keine Voraussetzung. Viele arbeiten mit mir rein auf der mentalen Ebene — die geistliche Sphäre kommt nur dazu, wenn du sie ausdrücklich möchtest.</p>
+      </details>
+      <details>
+        <summary>Was passiert im kostenlosen Erstgespräch?</summary>
+        <p>Wir lernen uns kennen, du erzählst, worum es dir geht, und ich sage dir ehrlich, ob und wie ich dir helfen kann. Kein Verkaufsdruck, keine Verpflichtung — danach entscheidest du in Ruhe.</p>
+      </details>
+      <details>
+        <summary>Online oder vor Ort — was ist besser?</summary>
+        <p>Beides funktioniert. Online bist du flexibel und ortsunabhängig, vor Ort ist das Gespräch persönlicher. Viele kombinieren beides. Wir finden im Erstgespräch heraus, was zu dir passt.</p>
+      </details>
+      <details>
+        <summary>Wie viele Sessions brauche ich?</summary>
+        <p>Das hängt von deinem Anliegen ab. Manches lässt sich in wenigen Sessions klären, anderes braucht mehr Zeit. Es gibt keine Mindestlaufzeit — wir vereinbaren nur, was dir wirklich dient.</p>
+      </details>
+      <details>
+        <summary>Reicht nicht auch eine KI oder ein Ratgeber aus dem Internet?</summary>
+        <p>Gerade online kursiert viel Halbwissen mit psychologischen Begriffen, die kaum jemand richtig einordnen kann. Bei Themen der Psyche lohnt es sich, mit einem echten Menschen zu sprechen, der dich sieht, nachfragt und dich über Wochen begleitet — das kann kein Feed und keine KI ersetzen.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · AKTION -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final rev">
+      <p class="kicker" style="color:rgba(255,255,255,.75)">Der nächste Schritt</p>
+      <h2 class="mx">Deine Innenwelt wartet nicht auf <em style="color:#fff">„irgendwann“.</em></h2>
+      <p class="lead mx" style="margin-top:20px">Schreib mir zwei Minuten lang, worum es geht — und wir sprechen. Kostenlos, unverbindlich, ohne Warteliste.</p>
+      <a class="btn mag" href="#kontakt">Jetzt kostenloses Erstgespräch sichern</a>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" style="padding-top:0">
+  <div class="wrap contact">
+    <div>
+      <p class="kicker rev">Kontakt</p>
+      <h2 class="rev">Erzähl mir, worum <em>es geht.</em></h2>
+      <p class="lead rev d1" style="margin-top:22px">Ein paar Sätze reichen. Ich melde mich persönlich bei dir — meist innerhalb weniger Tage.</p>
+      <div class="direct rev d2">
+        <a href="mailto:ephraimcoaching@gmail.com"><span>E-Mail</span>ephraimcoaching@gmail.com</a>
+        <a href="https://www.instagram.com/ogmindsetcoaching/" target="_blank" rel="noopener"><span>Instagram</span>@ogmindsetcoaching</a>
+      </div>
+    </div>
+    <form id="anfrage" class="rev d1">
+      <div class="row2">
+        <div class="field"><label for="f-name">Name</label><input id="f-name" type="text" required autocomplete="name"></div>
+        <div class="field"><label for="f-mail">E-Mail</label><input id="f-mail" type="email" required autocomplete="email"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="f-format">Format</label>
+          <select id="f-format"><option>Online</option><option>Vor Ort</option><option>Noch offen</option></select></div>
+        <div class="field"><label for="f-ebene">Ebene</label>
+          <select id="f-ebene"><option>Nur mental</option><option>Mental und geistlich</option><option>Weiß ich noch nicht</option></select></div>
+      </div>
+      <div class="field"><label for="f-text">Dein Anliegen</label><textarea id="f-text" required placeholder="Worum geht es? Ein paar Sätze reichen völlig."></textarea></div>
+      <label class="consent"><input type="checkbox" required> Ich bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verwendet werden.</label>
+      <button class="btn btn--fill mag" type="submit" style="justify-self:start">Anfrage senden</button>
+      <p style="font-size:.82rem;color:var(--mist);margin:0">Der Button öffnet dein E-Mail-Programm — du siehst die Nachricht, bevor du sie abschickst.</p>
+    </form>
+  </div>
+</section>
+
+<!-- HINWEIS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="notice rev">
+      <h3>Wichtiger Hinweis</h3>
+      <p>Coaching ist <b>keine Psychotherapie</b> und ersetzt weder ärztliche noch psychotherapeutische Behandlung. Die Ausbildung zum Psychotherapeuten nach dem Heilpraktikergesetz befindet sich derzeit im Abschluss; Therapie wird erst nach bestandener Prüfung angeboten. Der Selbst-Check auf dieser Seite ist keine Diagnose, sondern eine Orientierungshilfe.</p>
+      <p><b>In einer akuten Krise</b> wende dich bitte sofort an professionelle Hilfe: Telefonseelsorge <b>0800 111 0 111</b> oder <b>0800 111 0 222</b> (kostenfrei, rund um die Uhr), ärztlicher Bereitschaftsdienst <b>116 117</b>, im Notfall <b>112</b>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="sticky-cta">
+  <span>Kostenloses Erstgespräch — ohne Warteliste</span>
+  <a class="btn" href="#kontakt">Termin sichern</a>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <img src="assets/logo.png" alt="OG Mindset Coaching">
+      <div class="foot-links">
+        <a href="mailto:ephraimcoaching@gmail.com">ephraimcoaching@gmail.com</a>
+        <a href="https://www.instagram.com/ogmindsetcoaching/" target="_blank" rel="noopener">@ogmindsetcoaching</a>
+        <a href="#impressum">Impressum</a>
+        <a href="#datenschutz">Datenschutz</a>
+      </div>
+    </div>
+    <p class="copy">© <span id="yr">2026</span> OG Mindset Coaching — Welten verändern, um die Welt zu verändern.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
