@@ -394,63 +394,60 @@
     sw(true);
   };
 
-  /* Selbst-Check */
+  /* Selbst-Check: Ja / Manchmal / Nein mit Punktelogik */
   var Q = [
-    {
-      q: "Wie oft fühlst du dich innerlich überfordert oder rastlos?",
-      o: [
-        ["Fast täglich", "k"],
-        ["Immer wieder in Phasen", "s"],
-        ["Selten — ich will vorbeugen", "w"],
-      ],
-    },
-    {
-      q: "Wie gut kannst du einordnen, was in solchen Momenten in dir passiert?",
-      o: [
-        ["Gar nicht — es ist diffus", "k"],
-        ["Teilweise, aber es hilft mir nicht", "s"],
-        ["Ganz gut, ich will tiefer verstehen", "w"],
-      ],
-    },
-    {
-      q: "Hast du jemanden, mit dem du offen und ohne Bewertung reden kannst?",
-      o: [
-        ["Ehrlich gesagt: nein", "k"],
-        ["Schon — aber niemand Objektiven", "s"],
-        ["Ja, aber mir fehlt Struktur", "w"],
-      ],
-    },
-    {
-      q: "Hast du den Eindruck, dass es bei dir um mehr als „nur“ Gedanken geht?",
-      o: [
-        ["Ja, da ist auch eine geistliche Ebene", "g"],
-        ["Vielleicht — ich bin offen", "g"],
-        ["Nein, mir geht es um die mentale Seite", "m"],
-      ],
-    },
+    "Fühlst du dich oft innerlich überfordert oder rastlos?",
+    "Ist es schwer für dich einzuordnen, was in solchen Momenten in dir passiert?",
+    "Fehlt dir jemand, mit dem du offen und ohne Bewertung reden kannst?",
+    "Bleibst du in Gedankenkreisen hängen, aus denen du allein kaum herauskommst?",
+    "Spürst du Stress auch körperlich — etwa als Anspannung, Unruhe oder schlechten Schlaf?",
+    "Fällt es dir schwer, Gedanken und Gefühle bewusst zu beeinflussen?",
+    "Vermeidest du Themen, die dich innerlich belasten?",
+    "Hast du das Gefühl, dass „irgendwann“ für deine Psyche nie kommt?",
+    "Wünschst du dir mehr Struktur und ein klares Gegenüber für das, was in dir passiert?",
+    "Spürst du, dass es bei dir um mehr geht als „nur“ Gedanken — auch um eine geistliche Ebene?",
+  ];
+  /* Gewichtung: Ja = 1, Manchmal = 0,5, Nein = 0 — Summe 0–10 */
+  var OPTS = [
+    ["Ja", 1],
+    ["Manchmal", 0.5],
+    ["Nein", 0],
   ];
   var R = {
     k: {
       t: "FOKUS: KLARHEIT",
       h: "Erst verstehen, dann verändern.",
       p: "Deine Antworten deuten darauf hin, dass gerade vieles gleichzeitig auf dich einwirkt und schwer zu greifen ist. Genau dafür ist der Einstieg gedacht: Wir sortieren gemeinsam, was da eigentlich los ist — in deinem Tempo, ohne Etiketten. Der erste Schritt ist ein Gespräch.",
+      range: "8–10",
     },
     s: {
       t: "FOKUS: STABILITÄT",
       h: "Du kennst deine Baustellen — jetzt fehlt der Plan.",
       p: "Du nimmst dich selbst schon gut wahr, aber allein drehst du dich im Kreis. Mit Struktur, einem objektiven Gegenüber und konkreten Werkzeugen für Gedanken und Gefühle kommst du raus aus dem Grübeln und rein ins Arbeiten.",
+      range: "4–7",
     },
     w: {
       t: "FOKUS: WACHSTUM",
       h: "Dir geht es nicht schlecht — du willst mehr.",
       p: "Stark: Du wartest nicht, bis etwas kippt. Mentales Wachstum lässt sich trainieren wie ein Muskel — mit Plan, Material und jemandem, der dich fordert und begleitet. Lass uns schauen, wo dein nächstes Level liegt.",
+      range: "0–3",
     },
   };
   var body = document.getElementById("check-body");
   var count = document.getElementById("q-count");
   var i = 0;
-  var score = { k: 0, s: 0, w: 0 };
+  var points = 0;
   var geist = false;
+
+  function formatPts(n) {
+    return Number.isInteger(n) ? String(n) : n.toFixed(1).replace(".", ",");
+  }
+
+  function stageFor(pts) {
+    if (pts >= 8) return "k"; /* Stufe 8–10 */
+    if (pts > 3) return "s"; /* Stufe 4–7 (inkl. 3,5) */
+    return "w"; /* Stufe 0–3 */
+  }
 
   function q() {
     if (!body || !count) return;
@@ -460,19 +457,18 @@
     d.innerHTML =
       '<div class="q-bar"><i style="width:' +
       (i / Q.length) * 100 +
-      '%"></i></div><p class="q-title">' +
-      Q[i].q +
-      '</p><div class="q-opts"></div>';
+      '%"></i></div><p class="q-title"></p><div class="q-opts"></div>';
+    d.querySelector(".q-title").textContent = Q[i];
     var o = d.querySelector(".q-opts");
-    Q[i].o.forEach(function (pair) {
+    OPTS.forEach(function (pair) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "q-opt";
       b.textContent = pair[0];
       b.onclick = function () {
-        var c = pair[1];
-        if (c === "g") geist = true;
-        else if (c !== "m") score[c]++;
+        points += pair[1];
+        /* Letzte Frage: Ja/Manchmal = geistliche Ebene angesprochen */
+        if (i === Q.length - 1 && pair[1] > 0) geist = true;
         i++;
         if (i < Q.length) q();
         else res();
@@ -490,24 +486,24 @@
   function res() {
     if (!body || !count) return;
     count.textContent = "DEIN ERGEBNIS";
-    var best = "k";
-    var m = -1;
-    for (var key in score) {
-      if (score[key] > m) {
-        m = score[key];
-        best = key;
-      }
-    }
+    var best = stageFor(points);
     var r = R[best];
     var add = geist
       ? " Und weil du die geistliche Ebene angesprochen hast: Auch dafür ist hier ausdrücklich Raum — Seelsorge und Gebet gehören bei mir dazu, wenn du das möchtest."
       : "";
+    var scoreLine =
+      "Deine Antworten ergeben <b>" +
+      formatPts(points) +
+      " Punkte</b> (Stufe " +
+      r.range +
+      "). ";
     body.innerHTML =
       '<div class="check-result fade"><span class="tag">' +
       r.t +
       "</span><h3>" +
       r.h +
       "</h3><p>" +
+      scoreLine +
       r.p +
       add +
       "</p>" +
